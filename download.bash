@@ -12,8 +12,9 @@ if [ "$INSTALLER" = '' ]; then
     exit 1
 else
     echo -e "\e[33m\xE2\x9C\x93 Found google-chrome-beta_current_x86_64.rpm\e[m"
-    rpm2cpio google-chrome-beta_current_x86_64.rpm | cpio -ivdm --directory=$PWD/chromebeta
+    rpm2cpio google-chrome-beta_current_x86_64.rpm | cpio -ivdm --directory=$PWD
     export SETVERSION="$(rpm -qip google-chrome-beta_current_x86_64.rpm | grep -oP "(?<=Version\s\s\s\s\s:\s)(\d+)(\.\d+)+")"
     echo -e "\e[33m\xE2\x9C\x93 latest version is: $SETVERSION\e[m"
-    tar --create --verbose --gzip --file=chromebeta-$SETVERSION.tar.gz chromebeta/;
+    rm google-chrome-beta_current_x86_64.rpm
+    tar --create --verbose --gzip --file=../chromebeta-$SETVERSION.tar.gz $PWD;
 fi
