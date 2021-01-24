@@ -3,7 +3,7 @@
 # Try to locate the original rpm under current directory
 echo -e "\e[33m\xe2\x8f\xb3 Locating google-chrome-beta_current_x86_64.rpm...\e[m"
 DOWNLOADURL="https://dl.google.com/linux/direct/google-chrome-beta_current_x86_64.rpm"
-echo -e "\e[33m\xE2\x9C\x93 download URL is: $DOWNLOADURL"
+echo -e "\e[33m\xE2\x9C\x93 download URL is: $DOWNLOADURL\e[m"
 curl -L -C - -O $DOWNLOADURL
 INSTALLER="$(find . -maxdepth 1 | sort -r | grep --max-count=1 -oP "\.\/google-chrome-beta_current_x86_64.rpm")"
 if [ "$INSTALLER" = '' ]; then
@@ -12,7 +12,8 @@ if [ "$INSTALLER" = '' ]; then
     exit 1
 else
     echo -e "\e[33m\xE2\x9C\x93 Found google-chrome-beta_current_x86_64.rpm\e[m"
-    VERSION="$(rpm -qip google-chrome-beta_current_x86_64.rpm | grep -oP "(?<=Version\s\s\s\s\s:\s)(\d+)(\.\d+)+")"
-    echo -e "\e[33m\xE2\x9C\x93 latest version is: $VERSION"
-    rpm2cpio google-chrome-beta_current_x86_64.rpm | cpio -ivdm --directory=$PWD
+    rpm2cpio google-chrome-beta_current_x86_64.rpm | cpio -ivdm --directory=$PWD/chromebeta
+    export SETVERSION="$(rpm -qip google-chrome-beta_current_x86_64.rpm | grep -oP "(?<=Version\s\s\s\s\s:\s)(\d+)(\.\d+)+")"
+    echo -e "\e[33m\xE2\x9C\x93 latest version is: $SETVERSION\e[m"
+    tar --create --verbose --gzip --file=chromebeta-$SETVERSION.tar.gz chromebeta/;
 fi
