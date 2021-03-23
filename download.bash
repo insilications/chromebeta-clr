@@ -16,5 +16,5 @@ else
     export SETVERSION="$(rpm -qip google-chrome-beta_current_x86_64.rpm | grep -oP "(?<=Version\s\s\s\s\s:\s)(\d+)(\.\d+)+")"
     echo -e "\e[33m\xE2\x9C\x93 latest version is: $SETVERSION\e[m"
     rm google-chrome-beta_current_x86_64.rpm
-    tar --create --verbose --gzip --file=../chromebeta-$SETVERSION.tar.gz .;
+    tar --create --verbose --gzip --file=../chromebeta-$SETVERSION.tar.gz .
 fi
